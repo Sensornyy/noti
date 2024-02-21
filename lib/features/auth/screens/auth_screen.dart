@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noti/core/shared_widgets/loading_indicator.dart';
@@ -7,7 +6,7 @@ import 'package:noti/core/shared_widgets/main_button.dart';
 import 'package:noti/core/style/app_theme.dart';
 import 'package:noti/features/auth/bloc/auth_bloc.dart';
 import 'package:noti/features/auth/widgets/error_bar_widget.dart';
-import 'package:noti/features/auth/widgets/pinput_widget.dart';
+import 'package:noti/core/shared_widgets/pinput_widget.dart';
 import 'package:noti/features/auth/widgets/current_time_widget.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -15,15 +14,17 @@ class AuthScreen extends StatelessWidget {
 
   static const String _title = 'Log In';
   static const String _subtitle = 'Enter current time in hh : mm format';
+  static const String _success = 'Success';
+  static const String _continue = 'Continue';
   static const double _subtitleSize = 16.0;
   static const double _titlePadding = 60.0;
   static const double _subtitlePadding = 20.0;
   static const double _timePadding = 40.0;
+
   final TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    print('Build');
     final authBloc = BlocProvider.of<AuthBloc>(context);
 
     return SafeArea(
@@ -87,8 +88,8 @@ class AuthScreen extends StatelessWidget {
                       ),
                       child: state.maybeWhen(
                         loading: () => const LoadingIndicator(),
-                        success: () => const Text('Success'),
-                        orElse: () => const Text('Confirm'),
+                        success: () => const Text(_success),
+                        orElse: () => const Text(_continue),
                       ),
                     );
                   },

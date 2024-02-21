@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl/intl.dart';
+import 'package:noti/core/utils/date_util.dart';
 
 part 'auth_event.dart';
 
@@ -10,7 +10,6 @@ part 'auth_bloc.freezed.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthState.disabled()) {
-    const formatter = 'HHmm';
     const duration = 750;
     const pinLength = 4;
 
@@ -18,8 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await event.when(logIn: (pin) async {
         emit(const AuthState.loading());
 
-        DateTime now = DateTime.now();
-        String formattedTime = DateFormat(formatter).format(now);
+        String formattedTime = DateUtil.toStringFromDateTimeNow();
 
         await Future.delayed(const Duration(milliseconds: duration));
 

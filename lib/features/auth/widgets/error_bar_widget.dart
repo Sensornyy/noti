@@ -5,7 +5,6 @@ import 'package:noti/core/style/app_theme.dart';
 class ErrorBarWidget extends StatelessWidget {
   const ErrorBarWidget({Key? key}) : super(key: key);
 
-  static const double _height = 48.0;
   static const double _iconLeftPadding = 12.0;
   static const double _iconRightPadding = 6.0;
   static const String _errorText = 'The time is wrong. Try again.';
@@ -13,9 +12,9 @@ class ErrorBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _height,
+      height: AppTheme.barHeight,
       width: double.infinity,
-      color: AppTheme.errorBar,
+      color: AppTheme.barBackground,
       child: const Row(
         children: [
           Padding(
