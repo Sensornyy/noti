@@ -7,9 +7,14 @@ import 'package:noti/core/style/app_theme.dart';
 import 'package:noti/features/auth/bloc/auth_bloc.dart';
 
 class PinputWidget extends StatefulWidget {
-  const PinputWidget({required this.controller, Key? key}) : super(key: key);
+  const PinputWidget({
+    required this.controller,
+    this.validator,
+    Key? key,
+  }) : super(key: key);
 
   final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   @override
   State<PinputWidget> createState() => _PinputExampleState();
@@ -32,6 +37,16 @@ class _PinputExampleState extends State<PinputWidget> {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(color: AppTheme.pinputBorder),
+    ),
+  );
+
+  final errorPinTheme = PinTheme(
+    width: width,
+    height: height,
+    textStyle: AppTheme.pinputTextStyle,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(borderRadius),
+      border: Border.all(color: AppTheme.errorColor),
     ),
   );
 
@@ -58,12 +73,14 @@ class _PinputExampleState extends State<PinputWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Pinput(
+          validator: widget.validator,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onTapOutside: (_) => focusNode.unfocus(),
           onChanged: (pin) => authBloc.add(AuthEvent.toggle(pin)),
           controller: widget.controller,
           focusNode: focusNode,
           defaultPinTheme: pinTheme,
+          errorPinTheme: errorPinTheme,
           separatorBuilder: (index) => index == separatorIndex
               ? const Padding(
                   padding: EdgeInsets.symmetric(horizontal: separatorPadding),

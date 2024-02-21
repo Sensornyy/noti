@@ -34,4 +34,8 @@ abstract class AppIcons {
   static const IconData settings = IconData(0xe91e, fontFamily: 'icons');
   static const IconData success = IconData(0xe91f, fontFamily: 'icons');
   static const IconData users = IconData(0xe920, fontFamily: 'icons');
+  static const IconData history = IconData(0xe921, fontFamily: 'icons');
+  static const IconData image = IconData(0xe922, fontFamily: 'icons');
+  static const IconData remove = IconData(0xe923, fontFamily: 'icons');
+  static const IconData timer = IconData(0xe924, fontFamily: 'icons');
 }
