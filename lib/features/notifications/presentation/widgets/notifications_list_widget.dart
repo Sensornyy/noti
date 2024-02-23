@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:noti/core/style/app_icons.dart';
+import 'package:noti/features/notifications/presentation/widgets/notification_widget.dart';
 
 class NotificationsListWidget extends StatelessWidget {
   const NotificationsListWidget({
@@ -10,29 +9,21 @@ class NotificationsListWidget extends StatelessWidget {
 
   final List notificationsList;
 
-  static const double _iconSize = 75.0;
-  static const String _emptyListTip = 'No notifications. Press to add new notifications';
+  static const double _padding = 100.0;
 
   @override
   Widget build(BuildContext context) {
-    return notificationsList.isEmpty
-        ? const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  AppIcons.addCircle,
-                  size: _iconSize,
-                ),
-                Text(_emptyListTip)
-              ],
-            ),
-          )
-        : ListView.builder(
-            itemCount: notificationsList.length,
-            itemBuilder: (context, index) {
-              return Text('$index');
-            },
-          );
+    return ListView.builder(
+      itemCount: notificationsList.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: index == notificationsList.length - 1
+              ? const EdgeInsets.only(bottom: _padding)
+              : EdgeInsets.zero,
+          child: NotificationWidget(notification: notificationsList[index]),
+        );
+      },
+      physics: const BouncingScrollPhysics(),
+    );
   }
 }

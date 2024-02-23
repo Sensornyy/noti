@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noti/core/style/app_icons.dart';
 import 'package:noti/core/style/app_theme.dart';
+import 'package:noti/features/notifications/data/model/notification_model.dart';
 import 'package:noti/features/notifications/presentation/bloc/icon_cubit/icon_cubit.dart';
 
 class IconWidget extends StatelessWidget {
   const IconWidget({
+    this.notification,
     this.containerSize = 80.0,
     this.iconSize = 48.0,
     this.backgroundColor,
@@ -16,6 +18,7 @@ class IconWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final NotificationModel? notification;
   final double containerSize;
   final double iconSize;
   final Color? backgroundColor;
@@ -26,6 +29,8 @@ class IconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIconNotification = notification?.icon != null;
+
     return BlocBuilder<IconCubit, IconState>(
       builder: (context, state) {
         return Container(
@@ -34,7 +39,7 @@ class IconWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: backgroundColor ??
                 state.when(
-                  initial: () => AppTheme.scaffoldColor,
+                  initial: () => notification?.backgroundIconColor ?? AppTheme.scaffoldColor,
                   changed: (color, _) => color,
                 ),
             shape: BoxShape.circle,
@@ -49,12 +54,13 @@ class IconWidget extends StatelessWidget {
               ? Icon(
                   icon ??
                       state.when(
-                        initial: () => AppIcons.image,
+                        initial: () => notification?.icon ?? AppIcons.image,
                         changed: (_, icon) => icon,
                       ),
                   color: iconColor ??
                       state.when(
-                        initial: () => AppTheme.iconColor,
+                        initial: () =>
+                            isIconNotification ? AppTheme.buttonActive : AppTheme.iconColor,
                         changed: (_, __) => AppTheme.buttonActive,
                       ),
                   size: iconSize,

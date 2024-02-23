@@ -8,6 +8,7 @@ import 'package:noti/features/auth/bloc/auth_bloc.dart';
 import 'package:noti/features/auth/widgets/error_bar_widget.dart';
 import 'package:noti/core/shared_widgets/pinput_widget.dart';
 import 'package:noti/features/auth/widgets/current_time_widget.dart';
+import 'package:noti/features/notifications/presentation/screens/notifications_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({Key? key}) : super(key: key);
@@ -60,7 +61,18 @@ class AuthScreen extends StatelessWidget {
                 ],
               ),
             ),
-            BlocBuilder<AuthBloc, AuthState>(
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  success: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NotificationsScreen(),
+                    ),
+                  ),
+                  orElse: () {},
+                );
+              },
               builder: (context, state) {
                 return state.maybeWhen(
                   error: () => const Align(
@@ -83,7 +95,19 @@ class AuthScreen extends StatelessWidget {
                     return MainButton(
                       onPressed: state.maybeWhen(
                         disabled: () => null,
-                        enabled: () => () => authBloc.add(AuthEvent.logIn(controller.text)),
+                        enabled: () => () {
+                          authBloc.add(
+                            AuthEvent.logIn(controller.text),
+                          );
+                        },
+                        success: () => () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const NotificationsScreen(),
+                            ),
+                          );
+                        },
                         orElse: () => () {},
                       ),
                       child: state.maybeWhen(

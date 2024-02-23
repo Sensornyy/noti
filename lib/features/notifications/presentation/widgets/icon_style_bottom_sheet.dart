@@ -8,9 +8,11 @@ import 'package:noti/features/notifications/presentation/bloc/icon_cubit/icon_cu
 import 'package:noti/features/notifications/presentation/widgets/icon_widget.dart';
 
 class IconStyleBottomSheet extends StatelessWidget {
-  IconStyleBottomSheet({required this.bloc, Key? key}) : super(key: key);
+  const IconStyleBottomSheet({required this.bloc, Key? key}) : super(key: key);
 
   final IconCubit bloc;
+  final int selectedColorIndex = 0;
+  final int selectedIconIndex = 0;
 
   static const double padding = 16.0;
   static const List<IconData> iconsList = [
@@ -20,9 +22,6 @@ class IconStyleBottomSheet extends StatelessWidget {
     AppIcons.notifications,
     AppIcons.error,
   ];
-
-  int selectedColorIndex = 0;
-  int selectedIconIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +146,7 @@ class IconStyleBottomSheet extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: MainButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Save changes'),
+                child: const Text('Save changes'),
               ),
             )
           ],

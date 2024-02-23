@@ -97,6 +97,11 @@ final ThemeData appTheme = ThemeData(
       fontWeight: FontWeight.w700,
       color: AppTheme.textColor,
     ),
+    titleSmall: TextStyle(
+      fontSize: AppTheme.titleSmallSize,
+      fontWeight: FontWeight.w700,
+      color: AppTheme.textColor,
+    ),
   ),
 );
 
@@ -133,6 +138,7 @@ abstract class AppTheme {
   static const double appBarTitleSize = 16.0;
   static const double textButtonTitleSize = 14.0;
   static const double titleLargeSize = 20.0;
+  static const double titleSmallSize = 16.0;
   static const double elevatedButtonTitleSize = 16.0;
   static const double elevatedButtonPadding = 20.0;
   static const double elevatedButtonRadius = 10.0;

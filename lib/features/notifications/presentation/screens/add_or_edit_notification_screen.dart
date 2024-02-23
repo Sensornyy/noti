@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:noti/core/shared_widgets/main_app_bar.dart';
 import 'package:noti/core/shared_widgets/main_button.dart';
 import 'package:noti/core/shared_widgets/main_text_button.dart';
@@ -40,7 +39,6 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
   static const double padding = 15.0;
   static const double smallPadding = 8.0;
   static const double borderRadius = 8.0;
-  static const String dateFormat = 'HH:mm';
   static const String appBarTitle = 'Add new notification';
   static const String appBarEditTitle = 'Edit notification';
   static const String enterMessage = 'Enter message';
@@ -50,9 +48,12 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
 
   late final NotificationModel? notification;
   late final String? message;
+  late final Color? backgroundIconColor;
+  late final IconData? iconData;
   late final String title;
   late final String formattedTime;
   late final bool isRecurring;
+  late final bool isEdit;
   late final TextEditingController messageController;
   late final TextEditingController pinputController;
   late final GlobalKey<FormState> formKey;
@@ -62,10 +63,14 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
   void initState() {
     super.initState();
     notification = widget.notification;
-    message = notification == null ? '' : notification!.message;
+    message = notification?.message;
+    backgroundIconColor = notification?.backgroundIconColor;
+    iconData = notification?.icon;
     title = widget.isEdit ? appBarEditTitle : appBarTitle;
-    formattedTime = notification == null ? '' : DateFormat(dateFormat).format(notification!.time);
+    formattedTime =
+        notification?.time == null ? '' : DateUtil.toStringFromDate(notification!.time);
     isRecurring = widget.isRecurring;
+    isEdit = widget.isEdit;
     messageController = TextEditingController(text: message);
     pinputController = TextEditingController(text: formattedTime);
     formKey = GlobalKey<FormState>();
@@ -82,6 +87,7 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<IconCubit>(context);
+
     return Form(
       key: formKey,
       child: Scaffold(
@@ -187,7 +193,7 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
                   ),
                   Row(
                     children: [
-                      const IconWidget(),
+                      IconWidget(notification: notification),
                       const SizedBox(width: padding),
                       MainTextButton(
                         onPressed: () {
@@ -213,18 +219,36 @@ class _AddOrEditNotificationScreenState extends State<AddOrEditNotificationScree
                 child: MainButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      BlocProvider.of<NotificationsBloc>(context).add(
-                        NotificationsEvent.addNotification(
-                          NotificationModel(
-                            message: messageController.text,
-                            time: DateUtil.toDateTimeFromString(pinputController.text),
-                            notificationType: widget.notificationType,
+                      if (isEdit) {
+                        BlocProvider.of<NotificationsBloc>(context).add(
+                          NotificationsEvent.editNotification(
+                            id: notification!.id,
+                            newMessage: messageController.text,
+                            time: pinputController.text.isNotEmpty
+                                ? DateUtil.toDateTimeFromString(pinputController.text)
+                                : DateTime.now(),
                             icon: BlocProvider.of<IconCubit>(context).previousIcon,
                             backgroundIconColor:
                                 BlocProvider.of<IconCubit>(context).previousBackgroundColor,
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        BlocProvider.of<NotificationsBloc>(context).add(
+                          NotificationsEvent.addNotification(
+                            NotificationModel(
+                              message: messageController.text,
+                              time: pinputController.text.isNotEmpty
+                                  ? DateUtil.toDateTimeFromString(pinputController.text)
+                                  : DateTime.now(),
+                              notificationType: widget.notificationType,
+                              icon: BlocProvider.of<IconCubit>(context).previousIcon,
+                              backgroundIconColor:
+                                  BlocProvider.of<IconCubit>(context).previousBackgroundColor,
+                            ),
+                          ),
+                        );
+                      }
+
                       Navigator.pop(context);
                     }
                   },

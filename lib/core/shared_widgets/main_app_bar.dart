@@ -21,6 +21,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       toolbarHeight: toolbarHeight,
       leading: leading,
+      automaticallyImplyLeading: false,
       title: Padding(
         padding: const EdgeInsets.only(top: _topPadding),
         child: Column(
