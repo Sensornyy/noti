@@ -10,12 +10,14 @@ class NotificationsBar extends StatelessWidget {
   const NotificationsBar({Key? key}) : super(key: key);
 
   static const double _barRadius = 8.0;
+  static const double _barWidth = 361.0;
 
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<NotificationsBarBloc>(context);
 
     return Container(
+      width: _barWidth,
       height: AppTheme.barHeight,
       decoration: BoxDecoration(
         color: AppTheme.barBackground,
@@ -24,6 +26,7 @@ class NotificationsBar extends StatelessWidget {
       child: BlocBuilder<NotificationsBarBloc, NotificationsBarState>(
         builder: (context, state) {
           return Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(

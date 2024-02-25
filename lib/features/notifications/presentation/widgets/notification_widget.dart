@@ -119,6 +119,7 @@ class NotificationWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Row(
+                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       MainTextButton(onPressed: () {}, text: 'Select trigger 1'),
@@ -143,7 +144,7 @@ class NotificationWidget extends StatelessWidget {
       case NotificationType.fiveMinutes:
         return '5 Minutes';
       case NotificationType.oneTime:
-        return DateUtil.toFormattedStringFromDateTime(notification.time!);
+        return DateUtil.toFormattedStringFromDateTime(notification.time);
     }
   }
 }
